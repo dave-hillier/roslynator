@@ -57,6 +57,10 @@ Run following command to install Roslynator command line tool:
 ```sh
 dotnet tool install -g roslynator.dotnet.cli
 ```
+You can apply a specific refactoring without an IDE:
+```sh
+roslynator refactor --file MyFile.cs --span 0:0 --refactoring RR0010
+```
 
 See [documentation](https://josefpihrt.github.io/docs/roslynator/cli) for further information.
 
