@@ -71,6 +71,8 @@
     <ProjectReference Include="..\VisualBasic\VisualBasic.csproj" />
     <ProjectReference Include="..\Workspaces.Core\Workspaces.Core.csproj" />
     <ProjectReference Include="..\Documentation\Documentation.csproj" />
+    <ProjectReference Include="..\Refactorings\Refactorings.csproj" />
+    <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>
