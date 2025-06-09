@@ -105,6 +105,7 @@ internal static class Program
                     typeof(MigrateCommandLineOptions),
                     typeof(PhysicalLinesOfCodeCommandLineOptions),
                     typeof(RenameSymbolCommandLineOptions),
+                    typeof(RefactorCommandLineOptions),
                     typeof(SpellcheckCommandLineOptions),
                     typeof(FindSymbolCommandLineOptions),
                 });
@@ -189,6 +190,8 @@ internal static class Program
                             return PhysicalLinesOfCodeAsync(physicalLinesOfCodeCommandLineOptions).Result;
                         case RenameSymbolCommandLineOptions renameSymbolCommandLineOptions:
                             return RenameSymbolAsync(renameSymbolCommandLineOptions).Result;
+                        case RefactorCommandLineOptions refactorCommandLineOptions:
+                            return RefactorAsync(refactorCommandLineOptions).Result;
                         case SpellcheckCommandLineOptions spellcheckCommandLineOptions:
                             return SpellcheckAsync(spellcheckCommandLineOptions).Result;
                         case FindSymbolCommandLineOptions findSymbolCommandLineOptions:
@@ -459,6 +462,24 @@ internal static class Program
             codeContext: -1,
             predicate: predicate,
             getNewName: getNewName);
+
+        CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
+
+        return GetExitCode(status);
+    }
+
+    private static async Task<int> RefactorAsync(RefactorCommandLineOptions options)
+    {
+        if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
+            return ExitCodes.Error;
+
+        if (!TryParsePaths(options.Paths, out ImmutableArray<PathInfo> paths))
+            return ExitCodes.Error;
+
+        var command = new RefactorCommand(
+            options: options,
+            projectFilter: projectFilter,
+            fileSystemFilter: CreateFileSystemFilter(options));
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
 
