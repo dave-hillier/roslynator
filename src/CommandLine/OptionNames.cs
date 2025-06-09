@@ -44,4 +44,7 @@ internal static class OptionNames
     public const string Type = "type";
     public const string Visibility = "visibility";
     public const string WrapList = "wrap-list";
+    public const string File = "file";
+    public const string Span = "span";
+    public const string RefactoringId = "refactoring";
 }

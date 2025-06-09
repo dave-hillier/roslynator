@@ -107,6 +107,7 @@ internal static class Program
                     typeof(RenameSymbolCommandLineOptions),
                     typeof(SpellcheckCommandLineOptions),
                     typeof(FindSymbolCommandLineOptions),
+                    typeof(RefactorCommandLineOptions),
                 });
 
             parserResult.WithNotParsed(e =>
@@ -205,6 +206,8 @@ internal static class Program
                             return Help(helpCommandLineOptions);
                         case MigrateCommandLineOptions migrateCommandLineOptions:
                             return Migrate(migrateCommandLineOptions);
+                        case RefactorCommandLineOptions refactorCommandLineOptions:
+                            return RefactorAsync(refactorCommandLineOptions).Result;
                         default:
                             throw new InvalidOperationException();
                     }
@@ -822,6 +825,15 @@ internal static class Program
             options.DryRun);
 
         CommandStatus status = command.Execute();
+
+        return GetExitCode(status);
+    }
+
+    private static async Task<int> RefactorAsync(RefactorCommandLineOptions options)
+    {
+        var command = new RefactorCommand(options);
+
+        CommandStatus status = await command.ExecuteAsync();
 
         return GetExitCode(status);
     }
